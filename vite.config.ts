@@ -11,6 +11,10 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: "autoUpdate",
+      // public/site.webmanifest is the single source of truth for the PWA
+      // manifest; disable the plugin's auto-generated one to avoid a
+      // duplicate <link rel="manifest"> with a different name/theme colour.
+      manifest: false,
     }),
   ],
   test: {

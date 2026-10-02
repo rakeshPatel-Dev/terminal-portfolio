@@ -157,4 +157,64 @@ describe("Easter egg content", () => {
       expect(latestLines()[0]).toBe("Something happened.");
     });
   });
+
+  describe("man", () => {
+    it("should document a public command", async () => {
+      await user.type(input, "man about{enter}");
+
+      const lines = latestLines();
+      expect(lines).toContain("ABOUT(1)");
+      expect(lines.some(line => line.includes("about -"))).toBe(true);
+    });
+
+    it("should refuse unknown commands", async () => {
+      await user.type(input, "man nonsense{enter}");
+      expect(latestText()).toContain("No manual entry for nonsense.");
+    });
+
+    it("should not leak the hidden commands", async () => {
+      await user.type(input, "man xyzzy{enter}");
+      await user.type(input, "man fortune{enter}");
+
+      expect(
+        screen
+          .getAllByTestId("scripted")
+          .map(b => b.textContent)
+          .join(" ")
+      ).not.toContain("NAME");
+    });
+
+    it("should say so when given no argument", async () => {
+      await user.type(input, "man{enter}");
+      expect(latestText()).toContain("What manual page do you want?");
+    });
+  });
+
+  describe("curl", () => {
+    it("should refuse to run with no target", async () => {
+      await user.type(input, "curl{enter}");
+      expect(latestText()).toContain("curl --help");
+    });
+
+    it("should report a progress bar and a response", async () => {
+      await user.type(input, "curl portfolio{enter}");
+
+      expect(latestText()).toContain("100");
+      expect(latestText()).toContain("worse");
+    });
+
+    it("should fall back for an unknown host", async () => {
+      await user.type(input, "curl example.com{enter}");
+      expect(latestText()).toContain("rss");
+    });
+  });
+
+  describe("git log", () => {
+    it("should print the commit history", async () => {
+      await user.type(input, "git log{enter}");
+
+      expect(latestText()).toContain("stop trying to make fetch happen");
+      expect(latestText()).toContain("rk5080976@gmail.com");
+    });
+  });
 });

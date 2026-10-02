@@ -1,14 +1,17 @@
 import About from "../components/commands/About";
 import Clear from "../components/commands/Clear";
 import Cowsay from "../components/commands/Cowsay";
+import Curl from "../components/commands/Curl";
 import Echo from "../components/commands/Echo";
 import Education from "../components/commands/Education";
 import Email from "../components/commands/Email";
 import Fortune from "../components/commands/Fortune";
 import GeneralOutput from "../components/commands/GeneralOutput";
+import GitLog from "../components/commands/GitLog";
 import Gui from "../components/commands/Gui";
 import Help from "../components/commands/Help";
 import History from "../components/commands/History";
+import Man from "../components/commands/Man";
 import Projects from "../components/commands/Projects";
 import RmRf from "../components/commands/RmRf";
 import Scripted from "../components/commands/Scripted";
@@ -35,6 +38,7 @@ export const getRenderer = (cmd: string): React.ReactNode =>
     email: <Email />,
     env: <SysInfo kind="env" />,
     exit: <Scripted lines={[CLOSERS[0]]} />,
+    curl: <Curl />,
     fortune: <Fortune />,
     gui: <Gui />,
     hello: (
@@ -44,10 +48,12 @@ export const getRenderer = (cmd: string): React.ReactNode =>
     ),
     help: <Help />,
     history: <History />,
+    "git log": <GitLog />,
     id: <SysInfo kind="id" />,
     ps: <SysInfo kind="ps" />,
     projects: <Projects />,
     pwd: <GeneralOutput>/home/rakesh</GeneralOutput>,
+    man: <Man />,
     quit: <Scripted lines={[CLOSERS[1]]} />,
     rm: <RmRf />,
     socials: <Socials />,

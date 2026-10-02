@@ -30,14 +30,18 @@ const egg = (
   cmd: string,
   desc: string,
   tab: number,
-  eggId: string
+  eggId: string,
+  args = true
 ): Command => ({
   cmd,
   desc,
   tab,
+  // a multi-word command needs to match the whole line, otherwise only the
+  // first token resolves and the rest falls through to "command not found"
+  match: cmd.includes(" ") ? cmd : undefined,
   hidden: true,
   egg: eggId,
-  acceptsArgs: true,
+  acceptsArgs: args,
 });
 
 export const commands: Command[] = [
@@ -51,6 +55,7 @@ export const commands: Command[] = [
   egg("env", "print the environment", 6, "env"),
   egg("exit", "leave the terminal", 7, "exit"),
   egg("fortune", "a saying, at no charge", 3, "fortune"),
+  egg("git log", "the commit history of this portfolio", 4, "git-log"),
   { cmd: "gui", desc: "go to my portfolio in GUI", tab: 10 },
   {
     cmd: "hello",
@@ -64,6 +69,7 @@ export const commands: Command[] = [
   { cmd: "help", desc: "check available commands", tab: 9 },
   { cmd: "history", desc: "view command history", tab: 6 },
   egg("id", "print the current user id", 8, "id"),
+  egg("curl", "fetch a url over the network", 1, "curl"),
   egg("ps", "report process status", 8, "ps"),
   {
     cmd: "projects",
@@ -76,6 +82,7 @@ export const commands: Command[] = [
     ],
   },
   { cmd: "pwd", desc: "print current working directory", tab: 10 },
+  egg("man", "read a manual page", 6, "man", true),
   egg("quit", "leave the terminal", 7, "quit"),
   {
     cmd: "rm",

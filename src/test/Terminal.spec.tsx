@@ -1,7 +1,9 @@
 import { describe, it, expect, vi } from "vitest";
 import { UserEvent } from "@testing-library/user-event/dist/types/setup/setup";
 import { render, screen, userEvent } from "../utils/test-utils";
-import Terminal, { commands } from "../components/Terminal";
+import Terminal from "../components/Terminal";
+import { commands, publicCommands, EGG_ROSTER } from "../data/commands";
+import { discover, foundCount, foundEggs, totalEggs } from "../utils/eggs";
 
 // setup function
 function setup(jsx: JSX.Element) {
@@ -11,7 +13,8 @@ function setup(jsx: JSX.Element) {
   };
 }
 
-const allCmds = commands.map(cmdObj => cmdObj.cmd);
+const allCmds = commands.map(({ cmd }) => cmd);
+const visibleCmds = publicCommands.map(({ cmd }) => cmd);
 
 describe("Terminal Component", () => {
   let terminalInput: HTMLInputElement;
@@ -216,7 +219,7 @@ describe("Terminal Component", () => {
   });
 
   describe("Keyboard shortcuts", () => {
-    allCmds.forEach(cmd => {
+    visibleCmds.forEach(cmd => {
       it(`should autocomplete '${cmd}' when 'Tab' is pressed`, async () => {
         await user.type(terminalInput, cmd.slice(0, 2));
         await user.tab();
@@ -224,7 +227,7 @@ describe("Terminal Component", () => {
       });
     });
 
-    allCmds.forEach(cmd => {
+    visibleCmds.forEach(cmd => {
       it(`should autocomplete '${cmd}' when 'Ctrl + i' is pressed`, async () => {
         await user.type(terminalInput, cmd.slice(0, 2));
         await user.keyboard("{Control>}i{/Control}");
@@ -252,6 +255,61 @@ describe("Terminal Component", () => {
       expect(terminalInput.value).toBe("pwd");
       await user.keyboard("{arrowdown}");
       expect(terminalInput.value).toBe("");
+    });
+  });
+
+  describe("Hidden commands", () => {
+    const hiddenCmds = commands.filter(({ hidden }) => hidden);
+
+    it("should have at least one hidden command to test against", () => {
+      expect(hiddenCmds.length).toBeGreaterThan(0);
+    });
+
+    hiddenCmds.forEach(({ cmd }) => {
+      it(`should still run '${cmd}' when typed in full`, async () => {
+        await user.type(terminalInput, `${cmd}{enter}`);
+        expect(screen.queryByTestId(`not-found-0`)).not.toBeInTheDocument();
+        expect(screen.getByTestId(cmd)).toBeInTheDocument();
+      });
+
+      it(`should keep '${cmd}' out of 'help'`, async () => {
+        await user.type(terminalInput, "help{enter}");
+        expect(screen.getByTestId("help").textContent).not.toContain(cmd);
+      });
+
+      it(`should keep '${cmd}' out of Tab autocomplete`, async () => {
+        await user.type(terminalInput, cmd.slice(0, 2));
+        await user.tab();
+        expect(terminalInput.value).not.toBe(cmd);
+      });
+    });
+  });
+
+  describe("Easter egg discovery", () => {
+    it("should record an egg the first time it is triggered", async () => {
+      expect(foundCount()).toBe(0);
+
+      await user.type(terminalInput, "sudo{enter}");
+
+      expect(foundEggs()).toEqual(["sudo"]);
+      expect(discover("sudo")).toBe(false);
+    });
+
+    it("should count repeat triggers", async () => {
+      await user.type(terminalInput, "sudo{enter}");
+      await user.type(terminalInput, "sudo{enter}");
+
+      // both attempts stay in the scrollback, only the latest should escalate
+      const attempts = screen.getAllByTestId("sudo");
+      expect(attempts[attempts.length - 1].textContent).toContain(
+        "2 incidents"
+      );
+      expect(foundCount()).toBe(1);
+    });
+
+    it("should count every egg in the roster toward the total", () => {
+      expect(totalEggs()).toBe(EGG_ROSTER.length);
+      expect(totalEggs()).toBeGreaterThanOrEqual(foundEggs().length);
     });
   });
 });

@@ -5,13 +5,13 @@ import {
   HelpWrapper,
   KeyContainer,
 } from "../styles/Help.styled";
-import { commands } from "../Terminal";
+import { publicCommands } from "../../data/commands";
 import { generateTabs } from "../../utils/funcs";
 
 const Help: React.FC = () => {
   return (
     <HelpWrapper data-testid="help">
-      {commands.map(({ cmd, desc, tab }) => (
+      {publicCommands.map(({ cmd, desc, tab }) => (
         <CmdList key={cmd}>
           <Cmd>{cmd}</Cmd>
           {generateTabs(tab)}

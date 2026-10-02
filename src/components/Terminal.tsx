@@ -19,29 +19,7 @@ import {
   Wrapper,
 } from "./styles/Terminal.styled";
 import { argTab } from "../utils/funcs";
-
-type Command = {
-  cmd: string;
-  desc: string;
-  tab: number;
-}[];
-
-export const commands: Command = [
-  { cmd: "about", desc: "about Rakesh Patel", tab: 8 },
-  { cmd: "clear", desc: "clear the terminal", tab: 8 },
-  { cmd: "echo", desc: "print out anything", tab: 9 },
-  { cmd: "education", desc: "my education background", tab: 4 },
-  { cmd: "email", desc: "send an email to me", tab: 8 },
-  { cmd: "gui", desc: "go to my portfolio in GUI", tab: 10 },
-  { cmd: "help", desc: "check available commands", tab: 9 },
-  { cmd: "history", desc: "view command history", tab: 6 },
-  { cmd: "projects", desc: "view projects that I've coded", tab: 5 },
-  { cmd: "pwd", desc: "print current working directory", tab: 10 },
-  { cmd: "socials", desc: "check out my social accounts", tab: 6 },
-  { cmd: "themes", desc: "check available themes", tab: 7 },
-  { cmd: "welcome", desc: "display hero section", tab: 6 },
-  { cmd: "whoami", desc: "about current user", tab: 7 },
-];
+import { commands, publicCommands } from "../data/commands";
 
 type Term = {
   arg: string[];
@@ -113,13 +91,13 @@ const Terminal = () => {
       if (!inputVal) return;
 
       let hintsCmds: string[] = [];
-      commands.forEach(({ cmd }) => {
+      publicCommands.forEach(({ cmd }) => {
         if (_.startsWith(cmd, inputVal)) {
           hintsCmds = [...hintsCmds, cmd];
         }
       });
 
-      const returnedHints = argTab(inputVal, setInputVal, setHints, hintsCmds);
+      const returnedHints = argTab(inputVal, setInputVal);
       hintsCmds = returnedHints ? [...hintsCmds, ...returnedHints] : hintsCmds;
 
       // if there are many command to autocomplete

@@ -1,19 +1,8 @@
-import About from "./commands/About";
-import Clear from "./commands/Clear";
-import Echo from "./commands/Echo";
-import Education from "./commands/Education";
-import Email from "./commands/Email";
-import GeneralOutput from "./commands/GeneralOutput";
-import Gui from "./commands/Gui";
-import Help from "./commands/Help";
-import Welcome from "./commands/Welcome";
-import History from "./commands/History";
-import Projects from "./commands/Projects";
-import Socials from "./commands/Socials";
-import Themes from "./commands/Themes";
+import { useContext } from "react";
+import { argCommands } from "../data/commands";
+import { getRenderer } from "../data/renderers";
 import { OutputContainer, UsageDiv } from "./styles/Output.styled";
 import { termContext } from "./Terminal";
-import { useContext } from "react";
 
 type Props = {
   index: number;
@@ -23,33 +12,16 @@ type Props = {
 const Output: React.FC<Props> = ({ index, cmd }) => {
   const { arg } = useContext(termContext);
 
-  const specialCmds = ["projects", "socials", "themes", "echo"];
+  const handlesOwnArgs = argCommands.some(({ cmd: c }) => c === cmd);
 
   // return 'Usage: <cmd>' if command arg is not valid
   // eg: about tt
-  if (!specialCmds.includes(cmd) && arg.length > 0)
+  if (!handlesOwnArgs && arg.length > 0)
     return <UsageDiv data-testid="usage-output">Usage: {cmd}</UsageDiv>;
 
   return (
     <OutputContainer data-testid={index === 0 ? "latest-output" : null}>
-      {
-        {
-          about: <About />,
-          clear: <Clear />,
-          echo: <Echo />,
-          education: <Education />,
-          email: <Email />,
-          gui: <Gui />,
-          help: <Help />,
-          history: <History />,
-          projects: <Projects />,
-          pwd: <GeneralOutput>/home/rakesh</GeneralOutput>,
-          socials: <Socials />,
-          themes: <Themes />,
-          welcome: <Welcome />,
-          whoami: <GeneralOutput>visitor</GeneralOutput>,
-        }[cmd]
-      }
+      {getRenderer(cmd)}
     </OutputContainer>
   );
 };

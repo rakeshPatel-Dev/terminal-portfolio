@@ -25,8 +25,6 @@ These are what `help` lists and what Tab autocomplete will reach.
 | `welcome` | display hero section | `welcome` |
 | `whoami` | about current user | `whoami` |
 
-> Missing a man page: `whoami`. Add a note to `MAN_NOTES` in `src/data/manPages.ts`.
-
 ## Hidden commands
 
 Not in `help`, not in Tab autocomplete, and refused by `man`. They exist
@@ -98,4 +96,4 @@ component renders. Roster: `cat`, `cd`, `cowsay`, `df`, `env`, `exit`, `fortune`
 | `whoami` | no |
 | `xyzzy` | yes |
 
-`man` covers 12 of 13 documented commands, and nothing else.
+`man` covers 13 of 13 documented commands, and nothing else.

@@ -52,6 +52,11 @@ export const MAN_NOTES: Record<
     description:
       "With no arguments, lists the accounts. With 'go' and a number, opens that account in a browser.",
   },
+  whoami: {
+    synopsis: "whoami",
+    description:
+      "Prints who you are. The answer does not change, which is the point of a portfolio.",
+  },
   themes: {
     synopsis: "themes set <name>",
     description:

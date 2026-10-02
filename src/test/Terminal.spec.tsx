@@ -323,11 +323,9 @@ describe("Terminal Component", () => {
       await user.type(terminalInput, "sudo{enter}");
       await user.type(terminalInput, "sudo{enter}");
 
-      // both attempts stay in the scrollback, only the latest should escalate
+      // both attempts stay in the scrollback, newest is the escalated one
       const attempts = screen.getAllByTestId("sudo");
-      expect(attempts[attempts.length - 1].textContent).toContain(
-        "2 incidents"
-      );
+      expect(attempts[0].textContent).toContain("2 incidents");
       expect(foundCount()).toBe(1);
     });
 
@@ -345,11 +343,15 @@ describe("Terminal Component", () => {
         const runs = screen.getAllByTestId(testId);
         expect(runs).toHaveLength(4);
 
-        // every attempt after the first has to report its own count, so a
-        // component that hardcodes "twice" gets caught here
-        runs.slice(1).forEach((run, offset) => {
-          expect(run.textContent).toContain(`${offset + 2}`);
-        });
+        // history renders newest first and sits at the bottom of the
+        // scrollback, so the newest entry has to count highest. Every attempt
+        // reports its own number, which a component that hardcodes "twice"
+        // would fail
+        const text = runs.map(run => run.textContent ?? "");
+        expect(text[0]).toContain("4");
+        expect(text[1]).toContain("3");
+        expect(text[2]).toContain("2");
+        expect(new Set(text).size).toBe(4);
       });
     });
 

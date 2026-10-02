@@ -5,10 +5,11 @@ import { termContext } from "../Terminal";
 const Sudo: React.FC = () => {
   const { history, index } = useContext(termContext);
 
-  // Derived from history rather than component state, because every keystroke
-  // regenerates the history keys and remounts this component
+  // Counted from history rather than component state, because every
+  // keystroke regenerates the history keys and remounts this component.
+  // History is newest first, so this entry plus everything after it.
   const attempts = history
-    .slice(0, index + 1)
+    .slice(index)
     .filter(cmd => cmd.trim().split(" ")[0] === "sudo").length;
 
   return (

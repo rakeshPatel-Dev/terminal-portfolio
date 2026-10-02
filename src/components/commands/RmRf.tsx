@@ -6,7 +6,7 @@ const RmRf: React.FC = () => {
   const { history, index } = useContext(termContext);
 
   const attempts = history
-    .slice(0, index + 1)
+    .slice(index)
     .filter(cmd => cmd.trim() === "rm -rf /").length;
 
   return (

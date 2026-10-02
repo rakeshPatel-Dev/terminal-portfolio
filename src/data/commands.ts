@@ -26,21 +26,32 @@ export type Command = {
   subcommands?: SubcommandStep[];
 };
 
+const egg = (
+  cmd: string,
+  desc: string,
+  tab: number,
+  eggId: string
+): Command => ({
+  cmd,
+  desc,
+  tab,
+  hidden: true,
+  egg: eggId,
+  acceptsArgs: true,
+});
+
 export const commands: Command[] = [
   { cmd: "about", desc: "about Rakesh Patel", tab: 8 },
   { cmd: "clear", desc: "clear the terminal", tab: 8 },
+  egg("cowsay", "have something said, by a cow", 2, "cowsay"),
+  egg("df", "report file system free space", 8, "df"),
   { cmd: "echo", desc: "print out anything", tab: 9, acceptsArgs: true },
-  {
-    cmd: "education",
-    desc: "my education background",
-    tab: 4,
-  },
+  { cmd: "education", desc: "my education background", tab: 4 },
   { cmd: "email", desc: "send an email to me", tab: 8 },
-  {
-    cmd: "gui",
-    desc: "go to my portfolio in GUI",
-    tab: 10,
-  },
+  egg("env", "print the environment", 6, "env"),
+  egg("exit", "leave the terminal", 7, "exit"),
+  egg("fortune", "a saying, at no charge", 3, "fortune"),
+  { cmd: "gui", desc: "go to my portfolio in GUI", tab: 10 },
   {
     cmd: "hello",
     match: "hello world",
@@ -52,6 +63,8 @@ export const commands: Command[] = [
   },
   { cmd: "help", desc: "check available commands", tab: 9 },
   { cmd: "history", desc: "view command history", tab: 6 },
+  egg("id", "print the current user id", 8, "id"),
+  egg("ps", "report process status", 8, "ps"),
   {
     cmd: "projects",
     desc: "view projects that I've coded",
@@ -63,6 +76,7 @@ export const commands: Command[] = [
     ],
   },
   { cmd: "pwd", desc: "print current working directory", tab: 10 },
+  egg("quit", "leave the terminal", 7, "quit"),
   {
     cmd: "rm",
     match: "rm -rf /",
@@ -84,7 +98,7 @@ export const commands: Command[] = [
   },
   {
     cmd: "sudo",
-    desc: "do something you absolutely should not",
+    desc: "do something you should not",
     tab: 3,
     hidden: true,
     egg: "sudo",
@@ -96,8 +110,11 @@ export const commands: Command[] = [
     acceptsArgs: true,
     subcommands: [{ literal: "set" }, { values: () => Object.keys(theme) }],
   },
+  egg("uname", "print system information", 5, "uname"),
+  egg("uptime", "show how long this has been running", 4, "uptime"),
   { cmd: "welcome", desc: "display hero section", tab: 6 },
   { cmd: "whoami", desc: "about current user", tab: 7 },
+  egg("xyzzy", "a magic word", 5, "xyzzy"),
 ];
 
 /** Everything `help` and Tab autocomplete are allowed to mention */
@@ -110,4 +127,6 @@ export const argCommands = commands.filter(({ acceptsArgs }) => acceptsArgs);
  * Every easter egg id that exists, including ones fired by effects rather than
  * commands. Kept separate from `commands` so `totalEggs` stays stable.
  */
-export const EGG_ROSTER: string[] = ["hello-world", "rm-rf", "sudo"];
+export const EGG_ROSTER: string[] = commands
+  .map(({ egg: id }) => id)
+  .filter((id): id is string => Boolean(id));

@@ -8,6 +8,7 @@ import Gui from "../components/commands/Gui";
 import Help from "../components/commands/Help";
 import History from "../components/commands/History";
 import Projects from "../components/commands/Projects";
+import RmRf from "../components/commands/RmRf";
 import Socials from "../components/commands/Socials";
 import Sudo from "../components/commands/Sudo";
 import Themes from "../components/commands/Themes";
@@ -25,10 +26,16 @@ export const getRenderer = (cmd: string): React.ReactNode =>
     education: <Education />,
     email: <Email />,
     gui: <Gui />,
+    hello: (
+      <GeneralOutput>
+        Hello, world. Nobody has ever typed this for the first time.
+      </GeneralOutput>
+    ),
     help: <Help />,
     history: <History />,
     projects: <Projects />,
     pwd: <GeneralOutput>/home/rakesh</GeneralOutput>,
+    rm: <RmRf />,
     socials: <Socials />,
     sudo: <Sudo />,
     themes: <Themes />,

@@ -15,6 +15,8 @@ export type Command = {
   cmd: string;
   desc: string;
   tab: number;
+  /** Claims the whole trimmed line, for phrases the first token can't match */
+  match?: string;
   /** Hidden commands stay out of `help` and out of Tab autocomplete */
   hidden?: boolean;
   /** Discovery id used by the easter egg tracker */
@@ -34,7 +36,20 @@ export const commands: Command[] = [
     tab: 4,
   },
   { cmd: "email", desc: "send an email to me", tab: 8 },
-  { cmd: "gui", desc: "go to my portfolio in GUI", tab: 10 },
+  {
+    cmd: "gui",
+    desc: "go to my portfolio in GUI",
+    tab: 10,
+  },
+  {
+    cmd: "hello",
+    match: "hello world",
+    desc: "say the obligatory thing",
+    tab: 2,
+    hidden: true,
+    egg: "hello-world",
+    acceptsArgs: true,
+  },
   { cmd: "help", desc: "check available commands", tab: 9 },
   { cmd: "history", desc: "view command history", tab: 6 },
   {
@@ -48,6 +63,15 @@ export const commands: Command[] = [
     ],
   },
   { cmd: "pwd", desc: "print current working directory", tab: 10 },
+  {
+    cmd: "rm",
+    match: "rm -rf /",
+    desc: "delete everything",
+    tab: 6,
+    hidden: true,
+    egg: "rm-rf",
+    acceptsArgs: true,
+  },
   {
     cmd: "socials",
     desc: "check out my social accounts",
@@ -86,4 +110,4 @@ export const argCommands = commands.filter(({ acceptsArgs }) => acceptsArgs);
  * Every easter egg id that exists, including ones fired by effects rather than
  * commands. Kept separate from `commands` so `totalEggs` stays stable.
  */
-export const EGG_ROSTER: string[] = ["sudo"];
+export const EGG_ROSTER: string[] = ["hello-world", "rm-rf", "sudo"];

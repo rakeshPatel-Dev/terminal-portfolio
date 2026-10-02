@@ -2,7 +2,12 @@ import { describe, it, expect, vi } from "vitest";
 import { UserEvent } from "@testing-library/user-event/dist/types/setup/setup";
 import { render, screen, userEvent } from "../utils/test-utils";
 import Terminal from "../components/Terminal";
-import { commands, publicCommands, EGG_ROSTER } from "../data/commands";
+import {
+  argCommands,
+  commands,
+  publicCommands,
+  EGG_ROSTER,
+} from "../data/commands";
 import { discover, foundCount, foundEggs, totalEggs } from "../utils/eggs";
 
 // setup function
@@ -176,7 +181,7 @@ describe("Terminal Component", () => {
   describe("Invalid Arguments", () => {
     const specialUsageCmds = ["themes", "socials", "projects"];
     const usageCmds = allCmds.filter(
-      cmd => !["echo", ...specialUsageCmds].includes(cmd)
+      cmd => !argCommands.some(({ cmd: accepts }) => accepts === cmd)
     );
 
     usageCmds.forEach(cmd => {
@@ -265,22 +270,41 @@ describe("Terminal Component", () => {
       expect(hiddenCmds.length).toBeGreaterThan(0);
     });
 
-    hiddenCmds.forEach(({ cmd }) => {
-      it(`should still run '${cmd}' when typed in full`, async () => {
-        await user.type(terminalInput, `${cmd}{enter}`);
-        expect(screen.queryByTestId(`not-found-0`)).not.toBeInTheDocument();
-        expect(screen.getByTestId(cmd)).toBeInTheDocument();
+    it("should keep every hidden command out of the public list", () => {
+      hiddenCmds.forEach(({ cmd }) => {
+        expect(publicCommands.some(publicCmd => publicCmd.cmd === cmd)).toBe(
+          false
+        );
+      });
+    });
+
+    it("should render one row per public command and no more", async () => {
+      await user.type(terminalInput, "help{enter}");
+
+      const rows = screen.getAllByTestId("help-cmd");
+      expect(rows).toHaveLength(publicCommands.length);
+
+      const listed = rows.map(row => row.firstChild?.textContent);
+      hiddenCmds.forEach(({ cmd }) => expect(listed).not.toContain(cmd));
+    });
+
+    hiddenCmds.forEach(({ cmd, match, egg }) => {
+      // a `match` command is only reachable by typing the whole phrase
+      const phrase = match ?? cmd;
+
+      it(`should run '${phrase}' when typed in full`, async () => {
+        await user.type(terminalInput, `${phrase}{enter}`);
+
+        expect(screen.queryByTestId("not-found-0")).not.toBeInTheDocument();
+        expect(foundEggs()).toContain(egg);
       });
 
-      it(`should keep '${cmd}' out of 'help'`, async () => {
-        await user.type(terminalInput, "help{enter}");
-        expect(screen.getByTestId("help").textContent).not.toContain(cmd);
-      });
-
-      it(`should keep '${cmd}' out of Tab autocomplete`, async () => {
-        await user.type(terminalInput, cmd.slice(0, 2));
+      it(`should leave '${cmd}' out of Tab autocomplete`, async () => {
+        const partial = cmd.slice(0, Math.max(1, cmd.length - 1));
+        await user.type(terminalInput, partial);
         await user.tab();
-        expect(terminalInput.value).not.toBe(cmd);
+
+        expect(terminalInput.value).toBe(partial);
       });
     });
   });

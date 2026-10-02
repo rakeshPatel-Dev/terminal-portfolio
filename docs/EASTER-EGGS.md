@@ -17,8 +17,10 @@ through Phase 4 describe what could be built, not what exists. If you type one a
 | Phase 0.4 effects layer | Not started, needs Phase 3 |
 | Phase 0.5 `useTypewriter` | Not started, needs Phase 3 |
 | Phase 0.6 reduced-motion guard | Not started, needs Phase 3 |
-| Phase 0.8 multi-word commands | Not started, blocks most of Phase 1 |
-| `sudo` | Shipped, the demonstration egg |
+| Phase 0.8 multi-word commands | Shipped |
+| `sudo` | Shipped |
+| `rm -rf /` | Shipped |
+| `hello world` | Shipped |
 | Everything else | Not started |
 
 ## Why

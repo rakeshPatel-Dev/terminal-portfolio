@@ -1,14 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { SudoError, SudoHint, SudoWrapper } from "../styles/Sudo.styled";
-import { discover } from "../../utils/eggs";
 import { termContext } from "../Terminal";
 
 const Sudo: React.FC = () => {
   const { history, index } = useContext(termContext);
-
-  useEffect(() => {
-    discover("sudo");
-  }, []);
 
   // Derived from history rather than component state, because every keystroke
   // regenerates the history keys and remounts this component

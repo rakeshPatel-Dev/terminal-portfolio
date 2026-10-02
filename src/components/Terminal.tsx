@@ -187,8 +187,14 @@ const Terminal = () => {
       </Form>
 
       {cmdHistory.map((cmdH, index) => {
-        const commandArray = _.split(_.trim(cmdH), " ");
-        const validCommand = _.find(commands, { cmd: commandArray[0] });
+        const trimmed = _.trim(cmdH);
+        // a phrase like `rm -rf /` claims the whole line before the first
+        // token fallback gets a look in
+        const phraseMatch = _.find(commands, { match: trimmed });
+        const commandArray = _.split(trimmed, " ");
+        const validCommand =
+          phraseMatch ?? _.find(commands, { cmd: commandArray[0] });
+        const resolvedCmd = phraseMatch ? phraseMatch.cmd : commandArray[0];
         const contextValue = {
           arg: _.drop(commandArray),
           history: cmdHistory,
@@ -206,7 +212,7 @@ const Terminal = () => {
             </div>
             {validCommand ? (
               <termContext.Provider value={contextValue}>
-                <Output index={index} cmd={commandArray[0]} />
+                <Output index={index} cmd={resolvedCmd} />
               </termContext.Provider>
             ) : cmdH === "" ? (
               <Empty />

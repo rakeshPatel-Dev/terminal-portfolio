@@ -21,7 +21,15 @@ through Phase 4 describe what could be built, not what exists. If you type one a
 | `sudo` | Shipped |
 | `rm -rf /` | Shipped |
 | `hello world` | Shipped |
+| System utilities (`id`, `env`, `uptime`, `uname`, `ps`, `df`) | Shipped |
+| `fortune`, `cowsay`, `exit`, `quit`, `xyzzy` | Shipped |
+| `man`, `curl`, `git log` | Shipped |
+| Filesystem (`ls`, `cd`, `cat`, `pwd`) | Shipped |
+| `ping` | Not started |
 | Everything else | Not started |
+
+Every command and its description is listed in [COMMANDS.md](COMMANDS.md),
+generated from the registry by `npm run doc`.
 
 ## Why
 

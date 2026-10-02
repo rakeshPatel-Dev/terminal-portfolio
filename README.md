@@ -39,8 +39,13 @@ Type `help` in the terminal for the full list.
 | `email` | Open the default mail app |
 | `gui` | Open the non-terminal portfolio site |
 | `history` | View command history |
-| `whoami` / `pwd` | Current user / working directory |
+| `whoami` | Current user |
 | `clear` / `echo` / `help` | Standard terminal utilities |
+
+The list above is the polite version. There are 21 hidden commands that are not
+in `help`, not in Tab autocomplete, and refused by `man`. The full breakdown,
+including all of them, is in [docs/COMMANDS.md](docs/COMMANDS.md), which is
+generated from the command registry.
 
 ## Multiple Themes
 

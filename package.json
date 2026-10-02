@@ -11,6 +11,7 @@
     "coverage": "vitest run --coverage",
     "prepare": "husky install",
     "lint": "eslint .",
+    "doc": "vitest run src/test/generateCommandsDoc.spec.tsx",
     "format:check": "prettier --check .",
     "format": "prettier --write ."
   },

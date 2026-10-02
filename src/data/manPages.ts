@@ -15,16 +15,6 @@ export const MAN_NOTES: Record<
     synopsis: "clear",
     description: "Clears the scrollback. The commands you ran are gone.",
   },
-  cowsay: {
-    synopsis: "cowsay <text>",
-    description:
-      "Repeats the given text inside a speech bubble above a cow. The cow is decorative and has no opinions about your input.",
-  },
-  df: {
-    synopsis: "df [-h]",
-    description:
-      "Reports file system free space. The figures are fiction, but the filesystem really is full, mostly of things like this.",
-  },
   echo: {
     synopsis: "echo <text>",
     description:
@@ -37,21 +27,6 @@ export const MAN_NOTES: Record<
   email: {
     synopsis: "email",
     description: "Opens the default mail client with the address pre-filled.",
-  },
-  env: {
-    synopsis: "env",
-    description:
-      "Prints the environment. Note the pair of variables at the bottom; they are the honest ones.",
-  },
-  exit: {
-    synopsis: "exit",
-    description:
-      "Attempts to end the session. There is no session to end and no outside to return to.",
-  },
-  fortune: {
-    synopsis: "fortune",
-    description:
-      "Prints a saying at random. Attributed to nobody, which is how most of them arrived.",
   },
   gui: {
     synopsis: "gui",
@@ -72,10 +47,6 @@ export const MAN_NOTES: Record<
     description:
       "With no arguments, lists the projects. With 'go' and a number, opens that project in a browser.",
   },
-  quit: {
-    synopsis: "quit",
-    description: "Same as exit, and equally pointless.",
-  },
   socials: {
     synopsis: "socials go <number>",
     description:
@@ -86,19 +57,10 @@ export const MAN_NOTES: Record<
     description:
       "With no arguments, lists the available themes. With 'set' and a name, switches to it and remembers the choice for next time.",
   },
-  uptime: {
-    synopsis: "uptime",
-    description:
-      "Reports how long this has been running. The load average is flattering.",
-  },
   welcome: {
     synopsis: "welcome",
     description:
       "Prints the opening section. It is also printed when the page loads.",
-  },
-  whoami: {
-    synopsis: "whoami",
-    description: "Prints who you are. The answer does not change.",
   },
 };
 

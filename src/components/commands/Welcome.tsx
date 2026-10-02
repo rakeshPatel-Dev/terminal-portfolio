@@ -8,38 +8,17 @@ import {
   PreWrapper,
   Seperator,
 } from "../styles/Welcome.styled";
+import asciiArt from "../../../ascii-art-rakesh.txt?raw";
 
 const Welcome: React.FC = () => {
   return (
     <HeroContainer data-testid="welcome">
       <div className="info-section">
-        <PreName>
-          {`        
-    _____       __     _   __      _            
-   / ___/____ _/ /_   / | / /___ _(_)___  ____ _
-   \\__ \\/ __ \`/ __/  /  |/ / __ \`/ / __  / __ \`/
-  ___/ / /_/ / /_   / /|  / /_/ / / / / / /_/ / 
- /____/\\__,_/\\___/ /_/ |_/\\__,_/_/_/ /_/\\__, /  
-                                       /____/   
-          `}
-        </PreName>
+        <PreName>{asciiArt}</PreName>
         <PreWrapper>
-          <PreNameMobile>
-            {`
-    ____     __          
-   / __/__ _/ /_         
-  _\\ \\/ _ \`/ __/         
- /___/\\_,_/\\__/          
-    _  __     _          
-   / |/ /__ _(_)__  ___ _
-  /    / _ \`/ / _ \\/ _ \`/
- /_/|_/\\_,_/_/_//_/\\_, / 
-                  /___/  
- 
-          `}
-          </PreNameMobile>
+          <PreNameMobile>{asciiArt}</PreNameMobile>
         </PreWrapper>
-        <div>Welcome to my terminal portfolio. (Version 0.1.o)</div>
+        <div>Welcome to my terminal portfolio. (Version 0.1.0)</div>
         <Seperator>----</Seperator>
         <div>
           This project's source code can be found in this project's{" "}

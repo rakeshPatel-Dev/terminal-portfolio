@@ -1,5 +1,10 @@
 /// <reference types="vite/client" />
 
+declare module "*.txt" {
+  const content: string;
+  export default content;
+}
+
 import "styled-components";
 
 declare module "styled-components" {

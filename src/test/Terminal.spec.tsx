@@ -331,6 +331,28 @@ describe("Terminal Component", () => {
       expect(foundCount()).toBe(1);
     });
 
+    const escalating = [
+      { phrase: "sudo", testId: "sudo" },
+      { phrase: "rm -rf /", testId: "rm-rf" },
+    ];
+
+    escalating.forEach(({ phrase, testId }) => {
+      it(`should keep counting '${phrase}' past the second attempt`, async () => {
+        for (let run = 0; run < 4; run++) {
+          await user.type(terminalInput, `${phrase}{enter}`);
+        }
+
+        const runs = screen.getAllByTestId(testId);
+        expect(runs).toHaveLength(4);
+
+        // every attempt after the first has to report its own count, so a
+        // component that hardcodes "twice" gets caught here
+        runs.slice(1).forEach((run, offset) => {
+          expect(run.textContent).toContain(`${offset + 2}`);
+        });
+      });
+    });
+
     it("should count every egg in the roster toward the total", () => {
       expect(totalEggs()).toBe(EGG_ROSTER.length);
       expect(totalEggs()).toBeGreaterThanOrEqual(foundEggs().length);

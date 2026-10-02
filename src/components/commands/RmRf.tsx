@@ -20,7 +20,7 @@ const RmRf: React.FC = () => {
       </div>
       <RmRelief>
         {attempts > 1
-          ? "Still nothing deleted. You have tried this twice now."
+          ? `Still nothing deleted. You have tried this ${attempts} times now.`
           : "Nothing was deleted. It is a static website, there was never anything to delete."}
       </RmRelief>
     </RmWrapper>

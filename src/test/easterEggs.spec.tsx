@@ -217,4 +217,74 @@ describe("Easter egg content", () => {
       expect(latestText()).toContain("rk5080976@gmail.com");
     });
   });
+  describe("filesystem", () => {
+    it("should start in the home directory", async () => {
+      await user.type(input, "ls{enter}");
+      expect(latestText()).toContain("about.txt");
+      expect(latestText()).toContain("projects");
+    });
+
+    it("should follow cd and report the new directory", async () => {
+      await user.type(input, "cd projects{enter}");
+      await user.type(input, "pwd{enter}");
+
+      expect(latestText()).toContain("/home/rakesh/projects");
+    });
+
+    it("should stay where cd left the visitor", async () => {
+      await user.type(input, "cd projects{enter}");
+      await user.type(input, "ls{enter}");
+
+      expect(latestText()).toContain("snaphost.md");
+      expect(latestText()).not.toContain("about.txt");
+    });
+
+    it("should return home with cd ..", async () => {
+      await user.type(input, "cd projects{enter}");
+      await user.type(input, "cd ..{enter}");
+      await user.type(input, "pwd{enter}");
+
+      expect(latestText()).toContain("/home/rakesh");
+      expect(latestText()).not.toContain("projects");
+    });
+
+    it("should refuse to leave the tree", async () => {
+      await user.type(input, "cd nowhere{enter}");
+      expect(latestText()).toContain("No such file or directory");
+    });
+
+    it("should read a file with cat", async () => {
+      await user.type(input, "cat contact.txt{enter}");
+      expect(latestText()).toContain("rk5080976@gmail.com");
+    });
+
+    it("should refuse to cat a directory", async () => {
+      await user.type(input, "cat projects{enter}");
+      expect(latestText()).toContain("Is a directory");
+    });
+
+    it("should say so for a missing file", async () => {
+      await user.type(input, "cat ghost.txt{enter}");
+      expect(latestText()).toContain("No such file or directory");
+    });
+
+    it("should resolve a relative path", async () => {
+      await user.type(input, "cd projects{enter}");
+      await user.type(input, "cat ../notes/todo.txt{enter}");
+      expect(latestText()).toContain("stop calling it a portfolio");
+    });
+
+    it("should give each entry the directory it was run in", async () => {
+      await user.type(input, "ls{enter}");
+      await user.type(input, "cd projects{enter}");
+      await user.type(input, "ls{enter}");
+
+      const listings = screen
+        .getAllByTestId("scripted")
+        .map(block => block.textContent ?? "");
+
+      expect(listings[0]).toContain("snaphost.md");
+      expect(listings[1]).toContain("about.txt");
+    });
+  });
 });

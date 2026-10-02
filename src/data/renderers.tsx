@@ -1,6 +1,7 @@
 import About from "../components/commands/About";
 import Clear from "../components/commands/Clear";
 import Cowsay from "../components/commands/Cowsay";
+import Fs, { Cd } from "../components/commands/Fs";
 import Curl from "../components/commands/Curl";
 import Echo from "../components/commands/Echo";
 import Education from "../components/commands/Education";
@@ -31,6 +32,8 @@ export const getRenderer = (cmd: string): React.ReactNode =>
   ({
     about: <About />,
     clear: <Clear />,
+    cat: <Fs mode="cat" />,
+    cd: <Cd />,
     cowsay: <Cowsay />,
     df: <SysInfo kind="df" />,
     echo: <Echo />,
@@ -40,6 +43,7 @@ export const getRenderer = (cmd: string): React.ReactNode =>
     exit: <Scripted lines={[CLOSERS[0]]} />,
     curl: <Curl />,
     fortune: <Fortune />,
+    ls: <Fs mode="ls" />,
     gui: <Gui />,
     hello: (
       <GeneralOutput>
@@ -52,7 +56,7 @@ export const getRenderer = (cmd: string): React.ReactNode =>
     id: <SysInfo kind="id" />,
     ps: <SysInfo kind="ps" />,
     projects: <Projects />,
-    pwd: <GeneralOutput>/home/rakesh</GeneralOutput>,
+    pwd: <Fs mode="pwd" />,
     man: <Man />,
     quit: <Scripted lines={[CLOSERS[1]]} />,
     rm: <RmRf />,

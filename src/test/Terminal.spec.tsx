@@ -304,7 +304,10 @@ describe("Terminal Component", () => {
         await user.type(terminalInput, partial);
         await user.tab();
 
-        expect(terminalInput.value).toBe(partial);
+        // Tab may still land on a public command sharing the prefix (cd -> clear,
+        // ps -> projects), so the guarantee is that it never completes to the
+        // hidden command itself
+        expect(terminalInput.value).not.toBe(cmd);
       });
     });
   });

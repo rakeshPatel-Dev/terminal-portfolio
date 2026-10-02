@@ -72,10 +72,6 @@ export const MAN_NOTES: Record<
     description:
       "With no arguments, lists the projects. With 'go' and a number, opens that project in a browser.",
   },
-  pwd: {
-    synopsis: "pwd",
-    description: "Prints the working directory, which has never changed.",
-  },
   quit: {
     synopsis: "quit",
     description: "Same as exit, and equally pointless.",

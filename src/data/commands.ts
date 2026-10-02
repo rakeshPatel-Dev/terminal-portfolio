@@ -47,6 +47,8 @@ const egg = (
 export const commands: Command[] = [
   { cmd: "about", desc: "about Rakesh Patel", tab: 8 },
   { cmd: "clear", desc: "clear the terminal", tab: 8 },
+  egg("cat", "print the contents of a file", 6, "cat"),
+  egg("cd", "change the working directory", 2, "cd"),
   egg("cowsay", "have something said, by a cow", 2, "cowsay"),
   egg("df", "report file system free space", 8, "df"),
   { cmd: "echo", desc: "print out anything", tab: 9, acceptsArgs: true },
@@ -69,6 +71,7 @@ export const commands: Command[] = [
   { cmd: "help", desc: "check available commands", tab: 9 },
   { cmd: "history", desc: "view command history", tab: 6 },
   egg("id", "print the current user id", 8, "id"),
+  egg("ls", "list directory contents", 1, "ls"),
   egg("curl", "fetch a url over the network", 1, "curl"),
   egg("ps", "report process status", 8, "ps"),
   {
@@ -81,7 +84,13 @@ export const commands: Command[] = [
       { values: () => projects.map(({ id, title }) => `${id}.${title}`) },
     ],
   },
-  { cmd: "pwd", desc: "print current working directory", tab: 10 },
+  {
+    cmd: "pwd",
+    desc: "print current working directory",
+    tab: 10,
+    hidden: true,
+    egg: "pwd-fs",
+  },
   egg("man", "read a manual page", 6, "man", true),
   egg("quit", "leave the terminal", 7, "quit"),
   {

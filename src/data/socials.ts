@@ -21,7 +21,7 @@ const socials: Social[] = [
   {
     id: 3,
     title: "Facebook",
-    url: "https://www.facebook.com/rakeshpatel.me",
+    url: "https://www.facebook.com/1o1rakesh",
     tab: 1,
   },
   {

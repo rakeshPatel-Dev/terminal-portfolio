@@ -4,7 +4,7 @@ import { setToLS, getFromLS } from "../utils/storage";
 import { DefaultTheme } from "styled-components";
 
 export const useTheme = () => {
-  const [theme, setTheme] = useState<DefaultTheme>(themes.dark);
+  const [theme, setTheme] = useState<DefaultTheme>(themes["blue-matrix"]);
   const [themeLoaded, setThemeLoaded] = useState(false);
 
   const setMode = (mode: DefaultTheme) => {
@@ -14,7 +14,9 @@ export const useTheme = () => {
 
   useEffect(() => {
     const localThemeName = getFromLS("tsn-theme");
-    localThemeName ? setTheme(themes[localThemeName]) : setTheme(themes.dark);
+    localThemeName
+      ? setTheme(themes[localThemeName])
+      : setTheme(themes["blue-matrix"]);
     setThemeLoaded(true);
   }, []);
 
